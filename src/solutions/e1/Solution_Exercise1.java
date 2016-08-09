@@ -1,6 +1,4 @@
 /**
- * Excercise 1 is used to demonstrate pulling rosters by a school
- * 
  * @author      Andrew Pieniezny <andrew.pieniezny@neric.org>
  * @since       Aug 3, 2016
  */
@@ -12,6 +10,9 @@ import riconeapi.models.authentication.Endpoint;
 import riconeapi.models.xpress.XPersonReferenceType;
 import riconeapi.models.xpress.XRosterType;
 
+/*
+ * Excercise 1 is used to demonstrate pulling rosters by a school
+ */
 public class Solution_Exercise1
 {
 	final static String authUrl = "https://auth.test.ricone.org/login";
@@ -22,26 +23,45 @@ public class Solution_Exercise1
 	
 	public static void main(String[] args)
 	{
-		Authenticator auth = new Authenticator(authUrl, clientId, clientSecret); //Pass auth url, username, and password to authenticate to auth server
+		/*
+		 * Create a new Authenticator object and pass authUrl, clientId, and clientSecret
+		 */
+		Authenticator auth = new Authenticator(authUrl, clientId, clientSecret);
 
-		for(Endpoint e : auth.getEndpoints(providerId)) //For the provided endpoint
+		/*
+		 * Create a for-each loop to iterate through your providers and pass in the sandbox provider
+		 */
+		for(Endpoint e : auth.getEndpoints(providerId))
         {
+			/*
+			 * Create a new XPress object and pass the endpoint href
+			 */
             XPress xPress = new XPress(e.getHref()); //Pass endpoint info to data API (token, href)
             
+            /* 
+             * Retrieve all rosters by a particular school
+             * HINT: use XRosterType object and getXRostersbySchool()
+             * See: school_refids.txt for list of school refIds
+             */
 	        for(XRosterType r : xPress.getXRostersByXSchool("8367CF40-9F20-4AD0-BCF5-1AB89032AFB9").getData()) // Rosters by School refId
 	        {
-	        	if(r.getStudents().getStudentReference() != null && !r.getStudents().getStudentReference().isEmpty()) // Retrieve rosters with students
-	        	{
-	        		System.out.println("###courseRefId: " + r.getCourseRefId());
-		        	System.out.println("courseTitle: " + r.getCourseTitle());
-		        	for(XPersonReferenceType p : r.getStudents().getStudentReference()) //Students for each course
-	                {
-	                    System.out.println("refId: " + p.getRefId());
-	                    System.out.println("localId: " + p.getLocalId());
-	                    System.out.println("givenName: " + p.getGivenName());
-	                    System.out.println("familyName: " + p.getFamilyName());
-	                }	
-	        	}
+	        	/*
+	    		 * Display courseRefId and courseTitle within the for-each loop
+	    		 */
+        		System.out.println("###courseRefId: " + r.getCourseRefId());
+	        	System.out.println("courseTitle: " + r.getCourseTitle());
+	        	
+	        	/*
+	        	 * Display all students per course within the for-each loop
+	        	 * HINT: use XPersonReferenceType to iterate though getStudents().getStudentReference()
+	        	 */
+	        	for(XPersonReferenceType p : r.getStudents().getStudentReference()) //Students for each course
+                {
+                    System.out.println("refId: " + p.getRefId());
+                    System.out.println("localId: " + p.getLocalId());
+                    System.out.println("givenName: " + p.getGivenName());
+                    System.out.println("familyName: " + p.getFamilyName());
+                }	
             }
         }
 	}
