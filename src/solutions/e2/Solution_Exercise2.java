@@ -17,7 +17,7 @@ public class Solution_Exercise2
 {
 	final static String authUrl = "https://auth.test.ricone.org/login";
 	static final String clientId = "DevConf";
-	static final String clientSecret = "99f3a355b6e1ddb1fa39b91d5c588bc039";
+	static final String clientSecret = "test-password";
 
 	static final String providerId = "sandbox";
 	
